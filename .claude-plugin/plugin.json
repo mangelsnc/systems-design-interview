@@ -1,0 +1,19 @@
+{
+  "name": "systems-design-interview",
+  "version": "1.0.0",
+  "description": "Simulacro de entrevista de diseño de sistemas: Claude hace de entrevistador, evalúa sobre 100 y guarda una ficha en Markdown y PDF.",
+  "author": {
+    "name": "Miguel Ángel Sánchez",
+    "url": "https://github.com/mangelsnc"
+  },
+  "homepage": "https://github.com/mangelsnc/systems-design-interview",
+  "repository": "https://github.com/mangelsnc/systems-design-interview",
+  "keywords": [
+    "system-design",
+    "interview",
+    "practice",
+    "architecture",
+    "entrevista"
+  ],
+  "license": "MIT"
+}

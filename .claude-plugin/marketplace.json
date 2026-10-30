@@ -1,0 +1,16 @@
+{
+  "name": "systems-design-interview",
+  "description": "Plugin de práctica de entrevistas de diseño de sistemas en castellano.",
+  "owner": {
+    "name": "Miguel Ángel Sánchez",
+    "url": "https://github.com/mangelsnc"
+  },
+  "plugins": [
+    {
+      "name": "systems-design-interview",
+      "source": "./",
+      "description": "Simulacro de entrevista de diseño de sistemas con evaluación sobre 100 y ficha en Markdown y PDF.",
+      "version": "1.0.0"
+    }
+  ]
+}

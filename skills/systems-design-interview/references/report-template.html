@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{EMPRESA}} · Entrevista de diseño de sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  @page :first { margin: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Inter", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 10pt; line-height: 1.5; color: #1a1a1a; margin: 0; background: #ffffff;
+  }
+  h2 { font-size: 15pt; font-weight: 600; margin: 22pt 0 8pt; padding-bottom: 4pt; border-bottom: 0.75pt solid #dadce0; break-after: avoid; }
+  h3 { font-size: 11.5pt; font-weight: 600; margin: 14pt 0 6pt; break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  .muted { color: #5f6368; }
+
+  /* Portada */
+  .cover { background: #111111; color: #ffffff; padding: 60mm 20mm 30mm; margin: 0; height: 297mm; box-sizing: border-box; overflow: hidden; break-after: page; }
+  .cover .kicker { font-size: 9pt; letter-spacing: 2pt; text-transform: uppercase; color: #9aa0a6; }
+  .cover h1 { font-size: 30pt; font-weight: 300; margin: 10pt 0 26pt; line-height: 1.15; }
+  .cover .meta { display: flex; gap: 28pt; font-size: 9.5pt; color: #bdc1c6; margin-bottom: 34pt; }
+  .cover .meta b { display: block; color: #ffffff; font-size: 12pt; font-weight: 600; }
+  .cover .score { font-size: 64pt; font-weight: 300; line-height: 1; }
+  .cover .score small { font-size: 18pt; color: #9aa0a6; }
+  .cover .verdict { display: inline-block; margin-top: 12pt; padding: 4pt 10pt; border-radius: 3pt; font-weight: 600; font-size: 11pt; background: #ffffff; }
+  .cover .case { margin-top: 30pt; font-size: 10.5pt; color: #e8eaed; max-width: 150mm; }
+
+  .v-strong { color: #137333; } .v-hire { color: #1a56c4; } .v-lean { color: #a05a00; } .v-nohire { color: #b3261e; }
+
+  /* Tablas: colores literales */
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 12pt; font-size: 9pt; }
+  thead { display: table-header-group; }
+  th { background-color: #f1f3f4; text-align: left; font-weight: 600; padding: 5pt 6pt; border: 0.75pt solid #dadce0; }
+  td { padding: 5pt 6pt; border: 0.75pt solid #dadce0; vertical-align: top; }
+  tr { break-inside: avoid; }
+
+  /* Etiquetas de categoría */
+  .tag { display: inline-block; padding: 1pt 6pt; border-radius: 8pt; font-size: 8pt; font-weight: 600; white-space: nowrap; }
+  .q-esperada { background-color: #e6f4ea; color: #137333; }
+  .q-util { background-color: #e8f0fe; color: #1a56c4; }
+  .q-dudosa { background-color: #fef7e0; color: #a05a00; }
+  .q-innecesaria { background-color: #fce8e6; color: #b3261e; }
+  .q-prematura { background-color: #f3e8fd; color: #7627bb; }
+  .q-otra { background-color: #f1f3f4; color: #3c4043; }
+
+  /* Puntuación */
+  .scores { break-inside: avoid; }
+  .score-row { display: grid; grid-template-columns: 52mm 1fr 18mm; gap: 8pt; align-items: center; margin: 5pt 0; }
+  .bar { height: 6pt; background-color: #e8eaed; border-radius: 3pt; overflow: hidden; }
+  .bar > span { display: block; height: 100%; background-color: #1a1a1a; }
+  .score-row .pts { text-align: right; font-weight: 600; }
+  .score-note { font-size: 8.5pt; color: #5f6368; margin: -2pt 0 6pt; }
+  .total-row { display: flex; justify-content: space-between; border-top: 0.75pt solid #dadce0; margin-top: 8pt; padding-top: 6pt; font-weight: 600; }
+
+  /* Diagramas y código */
+  figure { break-inside: avoid; margin: 10pt 0; text-align: center; }
+  figure svg, figure img { width: 100%; max-height: 200mm; height: auto; object-fit: contain; }
+  figcaption { font-size: 8.5pt; color: #5f6368; margin-top: 4pt; }
+  pre, code { font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace; font-size: 8.5pt; }
+  pre { background-color: #f8f9fa; border: 0.75pt solid #dadce0; border-radius: 3pt; padding: 8pt; white-space: pre-wrap; break-inside: avoid; text-align: left; }
+
+  .card { border: 0.75pt solid #dadce0; border-radius: 4pt; padding: 8pt 10pt; margin: 8pt 0; break-inside: avoid; }
+  ol.tips li { margin-bottom: 6pt; }
+</style>
+</head>
+<body>
+
+<!--
+  Plantilla de la ficha. Sustituye cada {{MARCADOR}} y duplica las filas de ejemplo.
+  - Clase del veredicto: v-strong | v-hire | v-lean | v-nohire
+  - Clase de categoría: q-esperada | q-util | q-dudosa | q-innecesaria | q-prematura | q-otra
+  - Barras: style="width: NN%" con NN = puntos / máximo * 100
+  - Diagramas: <img src="referencia.svg"> con el SVG de scripts/render-mermaid.sh en la misma carpeta.
+    No pegues el SVG en el HTML. Si no se pudo renderizar, sigue lo que indica SKILL.md (paso 8).
+  - Si el candidato no aportó diagrama, elimina su <figure>.
+  - PEN es la penalización ya limitada a 15. Si hubo rendición, añádelo en JUSTIFICACION_VEREDICTO.
+-->
+
+<section class="cover">
+  <div class="kicker">Entrevista de diseño de sistemas</div>
+  <h1>{{EMPRESA}}</h1>
+  <div class="meta">
+    <div>Nivel<b>{{NIVEL}}</b></div>
+    <div>Fecha<b>{{FECHA}}</b></div>
+    <div>Pistas<b>{{PISTAS}}</b></div>
+  </div>
+  <div class="score">{{TOTAL}}<small>/100</small></div>
+  <div class="verdict {{CLASE_VEREDICTO}}">{{VEREDICTO}}</div>
+  <p class="case">{{RESUMEN_CASO_UNA_FRASE}}</p>
+</section>
+
+<h2>1. Descripción del caso</h2>
+<p>{{DESCRIPCION_CASO}}</p>
+
+<h2>2. Contexto oculto</h2>
+<div>{{CONTEXTO_OCULTO_HTML}}</div>
+<h3>Trampas</h3>
+<table>
+  <thead><tr><th>Trampa</th><th>¿Descubierta?</th><th>Cómo se destapaba</th></tr></thead>
+  <tbody>
+    <tr><td>{{TRAMPA}}</td><td>{{SI_NO}}</td><td>{{PREGUNTA_CLAVE}}</td></tr>
+  </tbody>
+</table>
+
+<h2>3. Transcripción de la entrevista</h2>
+<table>
+  <thead><tr><th style="width:5%">#</th><th style="width:38%">Pregunta</th><th style="width:14%">Categoría</th><th>Respuesta resumida</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>{{PREGUNTA}}</td><td><span class="tag q-esperada">Esperada</span></td><td>{{RESPUESTA}}</td></tr>
+  </tbody>
+</table>
+
+<h2>4. Preguntas esperadas</h2>
+<table>
+  <thead><tr><th style="width:42%">Pregunta</th><th>Peso</th><th>¿Hecha?</th><th>Qué destapaba</th></tr></thead>
+  <tbody>
+    <tr><td>{{PREGUNTA}}</td><td>{{PESO}}</td><td>{{SI_NO}}</td><td>{{DATO}}</td></tr>
+  </tbody>
+</table>
+
+<h2>5. Preguntas innecesarias</h2>
+<h3>Las que hizo el candidato</h3>
+<table>
+  <thead><tr><th style="width:42%">Pregunta</th><th>Por qué no aportaba</th></tr></thead>
+  <tbody><tr><td>{{PREGUNTA}}</td><td>{{MOTIVO}}</td></tr></tbody>
+</table>
+<h3>Las típicas de este caso</h3>
+<table>
+  <thead><tr><th style="width:42%">Pregunta</th><th>Por qué no aporta</th></tr></thead>
+  <tbody><tr><td>{{PREGUNTA}}</td><td>{{MOTIVO}}</td></tr></tbody>
+</table>
+
+<h2>6. Diseño del candidato</h2>
+<div>{{DISENO_CANDIDATO_HTML}}</div>
+<figure>
+  {{SVG_O_IMG_CANDIDATO}}
+  <figcaption>Diagrama del candidato</figcaption>
+</figure>
+<h3>Profundización</h3>
+<div>{{PROFUNDIZACION_HTML}}</div>
+
+<h2>7. Solución de referencia</h2>
+<div>{{SOLUCION_REFERENCIA_HTML}}</div>
+<figure>
+  {{SVG_REFERENCIA}}
+  <figcaption>Diagrama de referencia</figcaption>
+</figure>
+
+<h2>8. Evaluación</h2>
+<div class="scores">
+  <div class="score-row"><span>Descubrimiento de requisitos</span><div class="bar"><span style="width: {{PCT_DESC}}%"></span></div><span class="pts">{{DESC}}/25</span></div>
+  <p class="score-note">{{JUSTIFICACION_DESC}}</p>
+  <div class="score-row"><span>Calidad de las preguntas</span><div class="bar"><span style="width: {{PCT_PREG}}%"></span></div><span class="pts">{{PREG}}/15</span></div>
+  <p class="score-note">{{JUSTIFICACION_PREG}}</p>
+  <div class="score-row"><span>Diseño final</span><div class="bar"><span style="width: {{PCT_DIS}}%"></span></div><span class="pts">{{DIS}}/30</span></div>
+  <p class="score-note">{{JUSTIFICACION_DIS}}</p>
+  <div class="score-row"><span>Trade-offs y justificación</span><div class="bar"><span style="width: {{PCT_TO}}%"></span></div><span class="pts">{{TO}}/15</span></div>
+  <p class="score-note">{{JUSTIFICACION_TO}}</p>
+  <div class="score-row"><span>Comunicación y proceso</span><div class="bar"><span style="width: {{PCT_COM}}%"></span></div><span class="pts">{{COM}}/15</span></div>
+  <p class="score-note">{{JUSTIFICACION_COM}}</p>
+  <div class="score-row"><span>Penalización por pistas</span><div></div><span class="pts">−{{PEN}}</span></div>
+  <div class="total-row"><span>Total</span><span>{{TOTAL}}/100 · <span class="{{CLASE_VEREDICTO}}">{{VEREDICTO}}</span></span></div>
+</div>
+<p>{{JUSTIFICACION_VEREDICTO}}</p>
+<h3>Comparación con la referencia</h3>
+<div>{{COMPARACION_HTML}}</div>
+
+<h2>9. Cómo mejorar las preguntas</h2>
+<div>{{MEJORA_PREGUNTAS_HTML}}</div>
+<div class="card">
+  <p class="muted">Tu pregunta</p>
+  <p>{{PREGUNTA_ORIGINAL}}</p>
+  <p class="muted">Mejor formulada</p>
+  <p><b>{{PREGUNTA_MEJORADA}}</b></p>
+  <p>{{POR_QUE}}</p>
+</div>
+
+<h2>10. Consejos para la próxima entrevista</h2>
+<ol class="tips">
+  <li>{{CONSEJO_1}}</li>
+  <li>{{CONSEJO_2}}</li>
+  <li>{{CONSEJO_3}}</li>
+</ol>
+
+</body>
+</html>
